@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import argparse
 import json
@@ -28,7 +28,7 @@ else:  # python < 3.4
 
     is_usacloud_installed = distutils.spawn.find_executable("usacloud")
 if not is_usacloud_installed:
-    subprocess.check_output("curl -fsSL https://releases.usacloud.jp/usacloud/repos/install.sh | sh", shell=True)
+    subprocess.check_output("curl -fsSL https://releases.usacloud.jp/usacloud/repos/install.sh | bash", shell=True)
 
 parser = argparse.ArgumentParser(description="Ansible dynamic inventory for sakura cloud")
 parser.add_argument("--list", action="store_true", default=True,
