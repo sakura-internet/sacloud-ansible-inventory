@@ -34,6 +34,8 @@ parser = argparse.ArgumentParser(description="Ansible dynamic inventory for saku
 parser.add_argument("--list", action="store_true", default=True,
                     help="List all active Droplets as Ansible inventory (default: True)")
 parser.add_argument("--host", action="store", help="Get all Ansible inventory variables about a specific Droplet")
+parser.add_argument("--all-zone", action="store_true", default=False,
+                    help="Enable fetching from all zones (default: False)")
 args = parser.parse_args()
 
 
@@ -78,13 +80,17 @@ def convert_host_var(instance):
     return hostvar
 
 
+zone_cmd = ""
+if args.all_zone:
+    zone_cmd = " --zone=all"
+
 if args.host is not None or args.host == "":
-    s = subprocess.check_output("usacloud server read --out json {}".format(args.host), shell=True)
+    s = subprocess.check_output("usacloud server read --out json {}".format(args.host) + zone_cmd, shell=True)
     result = json.loads(s.decode("utf-8"))[0]
     hostvar = convert_host_var(result)
     print(json.dumps(hostvar, sort_keys=True, indent=2, separators=(",", ": ")))
 elif args.list:
-    s = subprocess.check_output("usacloud server list --out json --max=1000", shell=True)
+    s = subprocess.check_output("usacloud server list --out json --max=1000" + zone_cmd, shell=True)
     result = json.loads(s.decode("utf-8"))
 
     inventory = {}
