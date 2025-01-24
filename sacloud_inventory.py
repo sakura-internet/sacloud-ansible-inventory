@@ -57,9 +57,9 @@ def convert_host_var(instance):
             n = re.findall(r"^nic(\d)_ip$", host_options["hostname_type"])  # like "nic1_ip"
             if len(n) == 1:
                 if_info = interfaces[int(n[0])]
-                if "UserIPAddress" in if_info:
+                if "UserIPAddress" in if_info and if_info["UserIPAddress"]:
                     ahost = str(if_info["UserIPAddress"])
-                if "IPAddress" in if_info:
+                if "IPAddress" in if_info and if_info["IPAddress"]:
                     ahost = str(if_info["IPAddress"])
 
     hostvar = {
