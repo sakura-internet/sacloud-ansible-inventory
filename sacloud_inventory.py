@@ -97,18 +97,18 @@ elif args.list:
         zone = instance["Zone"]["Name"]
         host = instance["Name"]
         if zone not in inventory.keys():
-            inventory[zone] = []
-        inventory[zone].append(host)
+            inventory[zone] = {"hosts": []}
+        inventory[zone]["hosts"].append(host)
 
         for tag in instance["Tags"]:
             if tag not in inventory.keys():
-                inventory[tag] = []
-            inventory[tag].append(host)
+                inventory[tag] = {"hosts": []}
+            inventory[tag]["hosts"].append(host)
 
         hostvars[host] = convert_host_var(instance)
 
     for k, v in inventory.items():
-        v.sort()
+        v["hosts"].sort()
 
     inventory["_meta"] = {"hostvars": hostvars}
 
